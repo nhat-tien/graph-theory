@@ -64,7 +64,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: src-tauri/target/release/bundle/${{ matrix.artifact_name }}${{ steps.get_version.outputs.version }}${{ matrix.ext_name }}
           asset_name: ${{ github.event.repository.name }}${{ steps.get_version.outputs.version }}${{ matrix.ext_name }}
-          tag: ${{ github.ref }}
+          tag: ${{ steps.get_version.outputs.version }}
       # - uses: tauri-apps/tauri-action@v0
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
