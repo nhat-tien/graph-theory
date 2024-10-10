@@ -46,7 +46,7 @@ function handleMouseDown(e: MouseEvent) {
 
 <style scoped lang="scss">
 @mixin hover {
-  background-color: blue;
+  background-color: $secondary-color;
   cursor: ew-resize;
 }
 
@@ -82,5 +82,6 @@ function handleMouseDown(e: MouseEvent) {
 .graph-container {
   flex: 1;
   background-color: $gray-color;
+  position: relative;
 }
 </style>

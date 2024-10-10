@@ -2,10 +2,14 @@
 import Layout from './components/Layout.vue';
 import MainGraph from './components/MainGraph.vue';
 import MainContent from './components/MainContent.vue';
+import Header from './components/Header.vue';
 </script>
 
 <template>
    <Layout>
+    <template #header>
+      <Header />
+    </template>
     <template #center>
       <MainContent>
         <template #graph>

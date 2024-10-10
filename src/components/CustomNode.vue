@@ -17,8 +17,8 @@ const props = defineProps<{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 3em;
+  height: 3em;
   border-radius: 50%;
   background-color: $primary-color;
   font-size: $node-font-size;
