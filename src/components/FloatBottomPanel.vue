@@ -1,6 +1,6 @@
 <template>
   <div class="float-panel">
-    <div v-tooltip:top="tooltipValue.addNode" class="float-panel__item">
+    <div v-tooltip:top="tooltipValue.addNode" class="float-panel__item" @click="addNode">
       <svg
         class="w-6 h-6 text-gray-800 dark:text-white"
         aria-hidden="true"
@@ -24,9 +24,16 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue';
+import useGraphStore from '@/store';
+
+const store = useGraphStore();
 const tooltipValue  = reactive({
   addNode: "Thêm node"
 })
+
+const addNode = () => {
+  store.addNode(100,100);
+}
 
 </script>
 

@@ -1,60 +1,30 @@
 <script setup lang="ts">
-import { VueFlow } from "@vue-flow/core";
-import CustomNode from "./CustomNode.vue";
-import CustomEdge from "./CustomEdge.vue";
-import FloatBottomPanel from "./FloatBottomPanel.vue";
+import { VueFlow, useVueFlow, NodePositionChange } from "@vue-flow/core";
+import CustomNode from "@/components/CustomNode.vue";
+import CustomEdge from "@/components/CustomEdge.vue";
+import FloatBottomPanel from "@/components/FloatBottomPanel.vue";
 import { Background } from "@vue-flow/background";
-import { ref } from "vue";
 import { Controls } from "@vue-flow/controls";
+import useGraphStore from "@/store.ts";
 
-const nodes = ref([
-  // {
-  //   id: "1",
-  //   type: "custom",
-  //   position: { x: 250, y: 5 },
-  //   data: { label: "1" },
-  // },
-  // {
-  //   id: "2",
-  //   type: "custom",
-  //   position: { x: 50, y: 250 },
-  //   data: { label: "2" },
-  // },
-  // {
-  //   id: "3",
-  //   type: "custom",
-  //   position: { x: 300, y: 250},
-  //   data: { label: "3" },
-  // },
-]);
 
-const edges = ref([
-  // {
-  //   id: "e1->2",
-  //   source: "1",
-  //   target: "2",
-  //   type: "custom",
-  //   markerEnd: MarkerType.ArrowClosed,
-  // },
-  // {
-  //   id: "e1->3",
-  //   source: "1",
-  //   target: "3",
-  //   type: "custom",
-  //   markerEnd: MarkerType.ArrowClosed,
-  // },
-  // {
-  //   id: "e2->3",
-  //   source: "2",
-  //   target: "3",
-  //   type: "custom",
-  //   markerEnd: MarkerType.ArrowClosed,
-  // },
-]);
+const store = useGraphStore();
+const { onNodesChange } = useVueFlow();
+
+onNodesChange(( param ) => {
+  param = param as NodePositionChange[];
+  param.forEach((each) => {
+    each = each as NodePositionChange
+    if(each.dragging) {
+      store.updateNodePosition(each.id, each.position.x, each.position.y);
+    }
+  });
+});
+
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges">
+  <VueFlow :nodes="store.nodes" :edges="store.edges">
     <template #node-custom="props">
       <CustomNode :label="props.data.label" />
     </template>
@@ -97,6 +67,10 @@ const edges = ref([
 
 .vue-flow__controls-button:last-child {
   border-radius: 0 0 7px 7px;
+}
+
+.vue-flow__edge-path {
+  stroke: #000;
 }
 
 </style>
