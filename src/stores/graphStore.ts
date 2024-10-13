@@ -2,12 +2,6 @@ import { Edge, Node, MarkerType} from "@vue-flow/core";
 import { defineStore } from "pinia";
 import { ref, toRaw, Ref, computed } from "vue";
 
-export enum AppMode {
-  Normal,
-  AddNode,
-  AddEgde
-}
-
 const useGraphStore = defineStore('vue-flow', () => {
 
   const nodes: Ref<Node[]> = ref([
@@ -36,6 +30,9 @@ const useGraphStore = defineStore('vue-flow', () => {
       id: "e1->2",
       source: "1",
       target: "2",
+      data: {
+        text: "2"
+      },
       type: "custom",
       markerEnd: MarkerType.ArrowClosed,
     },
@@ -43,6 +40,9 @@ const useGraphStore = defineStore('vue-flow', () => {
       id: "e1->3",
       source: "1",
       target: "3",
+      data: {
+        text: "10"
+      },
       type: "custom",
       markerEnd: MarkerType.ArrowClosed,
     },
@@ -50,6 +50,9 @@ const useGraphStore = defineStore('vue-flow', () => {
       id: "e2->3",
       source: "2",
       target: "3",
+      data: {
+        text: "100"
+      },
       type: "custom",
       markerEnd: MarkerType.ArrowClosed,
     },
@@ -57,7 +60,6 @@ const useGraphStore = defineStore('vue-flow', () => {
 
   const numOfNodes = computed(() => nodes.value.length);
 
-  const appMode = ref<AppMode>(AppMode.Normal);
 
   function updateNodePosition(id: string, x: number, y: number) {
     nodes.value = nodes.value.map((node) => {
@@ -89,7 +91,6 @@ const useGraphStore = defineStore('vue-flow', () => {
   }
 
   return {
-    appMode,
     nodes,
     edges,
     numOfNodes,

@@ -3,6 +3,8 @@ import Layout from './components/Layout.vue';
 import MainGraph from './components/MainGraph.vue';
 import MainContent from './components/MainContent.vue';
 import Header from './components/Header.vue';
+import SideColumn from '@/components/SideColumn.vue';
+import SideMenu from './components/SideMenuPage/SideMenu.vue';
 </script>
 
 <template>
@@ -10,8 +12,14 @@ import Header from './components/Header.vue';
     <template #header>
       <Header />
     </template>
+    <template #sidebar>
+      <SideColumn />
+    </template>
     <template #center>
       <MainContent>
+        <template #side-menu>
+          <SideMenu />
+        </template>
         <template #graph>
           <MainGraph />
         </template>

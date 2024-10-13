@@ -1,25 +1,13 @@
 <script setup lang="ts">
-import { VueFlow, useVueFlow, NodePositionChange } from "@vue-flow/core";
+import { VueFlow } from "@vue-flow/core";
 import CustomNode from "@/components/CustomNode.vue";
 import CustomEdge from "@/components/CustomEdge.vue";
 import FloatBottomPanel from "@/components/FloatBottomPanel.vue";
 import { Background } from "@vue-flow/background";
 import { Controls } from "@vue-flow/controls";
-import useGraphStore from "@/store.ts";
+import useGraph from "@/composables/useGraph.ts";
 
-
-const store = useGraphStore();
-const { onNodesChange } = useVueFlow();
-
-onNodesChange(( param ) => {
-  param = param as NodePositionChange[];
-  param.forEach((each) => {
-    each = each as NodePositionChange
-    if(each.dragging) {
-      store.updateNodePosition(each.id, each.position.x, each.position.y);
-    }
-  });
-});
+const { store } = useGraph();
 
 </script>
 

@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue';
-import useGraphStore from '@/store';
+import useGraphStore from '@/stores/graphStore';
 
 const store = useGraphStore();
 const tooltipValue  = reactive({
