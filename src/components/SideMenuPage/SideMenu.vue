@@ -16,8 +16,9 @@ const store = useAppMode();
 
 <style scoped lang="scss">
 .side-menu-container {
-  width: min(100px, 100%);
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
+  height: 100%;
 }
 </style>

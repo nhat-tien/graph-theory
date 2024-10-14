@@ -1,5 +1,6 @@
 import { Edge, Node, MarkerType} from "@vue-flow/core";
 import { defineStore } from "pinia";
+import { text } from "stream/consumers";
 import { ref, toRaw, Ref, computed } from "vue";
 
 const useGraphStore = defineStore('vue-flow', () => {
@@ -86,6 +87,21 @@ const useGraphStore = defineStore('vue-flow', () => {
     })
   }
 
+  function changeEdgeData(id: string, data: string) {
+    edges.value = edges.value.map((edge) => {
+      if(edge.id == id) {
+        return {
+          ...toRaw(edge),
+          data: {
+            text: data,
+          }
+        }
+      } else {
+        return toRaw(edge);
+      }
+    })
+  }
+
   function printNode() {
     console.log(toRaw(nodes.value))
   }
@@ -97,6 +113,7 @@ const useGraphStore = defineStore('vue-flow', () => {
     updateNodePosition,
     printNode,
     addNode,
+    changeEdgeData
   }
 });
 

@@ -1,11 +1,18 @@
-import { useVueFlow, NodePositionChange } from "@vue-flow/core";
-import { toRaw } from "vue";
+import { useVueFlow, NodePositionChange, Edge } from "@vue-flow/core";
+import { toRaw, ref } from "vue";
 import useGraphStore from "@/stores/graphStore.ts";
 
 
 export default function useGraph() {
   const store = useGraphStore();
   const { onNodesChange, onNodeClick, onEdgeClick} = useVueFlow();
+  const isToolbarDisplay = ref<boolean>(false);
+  const toolbarPosition = ref({
+    x: 0,
+    y: 0,
+  });
+  const edgeSelected = ref<Edge | undefined>();
+  const edgeValueInput = ref<string>("");
 
   onNodesChange(( param ) => {
     param = param as NodePositionChange[];
@@ -21,12 +28,38 @@ export default function useGraph() {
     console.log('Node clicked:', toRaw(node) , event);
   });
 
-  // Edge click event handler
   onEdgeClick(({ event, edge }) => {
-    console.log('Edge clicked:', toRaw(edge), event);
+    event = event as MouseEvent;
+    console.log(edge);
+    edgeSelected.value = edge;
+    isToolbarDisplay.value = true;
+    toolbarPosition.value = {
+      ...toolbarPosition,
+      x: event.clientX,
+      y: event.clientY,
+    }
   });
 
+  const changeEdgeData = () => {
+    if(edgeSelected.value) {
+      let value: string = edgeValueInput.value.trim();
+      store.changeEdgeData(edgeSelected.value.id, value)
+      isToolbarDisplay.value = false;
+      edgeValueInput.value = "";
+    }
+  }
+
+
+  const closeToolbar = () => {
+    isToolbarDisplay.value = false;
+  }
+
   return {
-    store
+    store,
+    isToolbarDisplay,
+    toolbarPosition,
+    closeToolbar,
+    edgeValueInput,
+    changeEdgeData
   }
 }

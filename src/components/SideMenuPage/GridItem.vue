@@ -1,6 +1,9 @@
 <template>
   <div class="grid-item">
-    <slot></slot>
+    <slot name="icon"></slot>
+    <div>
+      <slot name="text"></slot>
+    </div>
   </div>
 </template>
 
@@ -8,6 +11,10 @@
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.grid-item {
+  color: black;
+  width: max(100px, 35%);
+}
 
 </style>

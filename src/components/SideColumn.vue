@@ -55,8 +55,8 @@ const store = useAppMode();
 
 .side-column__item {
   border-radius: $border-radius;
-  width: 80%;
-  padding: 12px;
+  width: 70%;
+  padding: 9px;
   transition: all 0.2s ease-out;
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;

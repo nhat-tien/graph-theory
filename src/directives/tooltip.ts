@@ -11,6 +11,7 @@ export const Tooltip = {
     let tooltip =  document.createElement("div");
     tooltip.innerHTML = tooltipElementHTMLString.trim();
     tooltip.style.position = "absolute";
+    tooltip.style.animation = "appear 0.2s linear";
     switch (binding.arg) {
       case "top":
         tooltip.style.top = "-100%";
