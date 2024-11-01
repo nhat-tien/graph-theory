@@ -1,66 +1,91 @@
-import { Edge, Node, MarkerType} from "@vue-flow/core";
+import { Edge, Node } from "@vue-flow/core";
 import { defineStore } from "pinia";
-import { text } from "stream/consumers";
-import { ref, toRaw, Ref, computed } from "vue";
+import { ref, toRaw, computed, watchEffect } from "vue";
+import { invoke } from "@tauri-apps/api/tauri";
+
+// function getDefaultNodes(): Node[] {
+// return [
+//     {
+//       id: "1",
+//       type: "custom",
+//       position: { x: 250, y: 5 },
+//       data: { label: "1" },
+//     },
+//     {
+//       id: "2",
+//       type: "custom",
+//       position: { x: 50, y: 250 },
+//       data: { label: "2" },
+//     },
+//     {
+//       id: "3",
+//       type: "custom",
+//       position: { x: 300, y: 250},
+//       data: { label: "3" },
+//     },
+//
+// ]
+// }
+//
+//
+// function getDefaultEdges(): Edge[] {
+// return [
+//     {
+//       id: "e1->2",
+//       source: "1",
+//       target: "2",
+//       data: {
+//         text: "2",
+//         marker: true
+//       },
+//       type: "custom",
+//     },
+//     {
+//       id: "e1->3",
+//       source: "1",
+//       target: "3",
+//       data: {
+//         text: "10",
+//         marker: false
+//       },
+//       type: "custom",
+//     },
+//     {
+//       id: "e2->3",
+//       source: "2",
+//       target: "3",
+//       data: {
+//         text: "100",
+//         marker: true
+//       },
+//       type: "custom",
+//     },
+// ]
+// }
 
 const useGraphStore = defineStore('vue-flow', () => {
 
-  const nodes: Ref<Node[]> = ref([
-    {
-      id: "1",
-      type: "custom",
-      position: { x: 250, y: 5 },
-      data: { label: "1" },
-    },
-    {
-      id: "2",
-      type: "custom",
-      position: { x: 50, y: 250 },
-      data: { label: "2" },
-    },
-    {
-      id: "3",
-      type: "custom",
-      position: { x: 300, y: 250},
-      data: { label: "3" },
-    },
-  ]);
+  const nodes = ref<Node[]>([]);
 
-  const edges: Ref<Edge[]> = ref([
-    {
-      id: "e1->2",
-      source: "1",
-      target: "2",
-      data: {
-        text: "2"
-      },
-      type: "custom",
-      markerEnd: MarkerType.ArrowClosed,
-    },
-    {
-      id: "e1->3",
-      source: "1",
-      target: "3",
-      data: {
-        text: "10"
-      },
-      type: "custom",
-      markerEnd: MarkerType.ArrowClosed,
-    },
-    {
-      id: "e2->3",
-      source: "2",
-      target: "3",
-      data: {
-        text: "100"
-      },
-      type: "custom",
-      markerEnd: MarkerType.ArrowClosed,
-    },
-  ]);
+  const edges = ref<Edge[]>([]);
+
+  const fileName = ref<string>(" ");
+
+  const nodesFromStorage = sessionStorage.getItem("nodes");
+  const edgesFromStorage = sessionStorage.getItem("edges");
+  const fileNameFromStorage = sessionStorage.getItem("fileName");
+
+  if(nodesFromStorage) {
+    nodes.value = JSON.parse(nodesFromStorage);
+  } 
+  if(edgesFromStorage) {
+    edges.value = JSON.parse(edgesFromStorage);
+  } 
+  if(fileNameFromStorage) {
+    fileName.value = fileNameFromStorage
+  }
 
   const numOfNodes = computed(() => nodes.value.length);
-
 
   function updateNodePosition(id: string, x: number, y: number) {
     nodes.value = nodes.value.map((node) => {
@@ -106,14 +131,43 @@ const useGraphStore = defineStore('vue-flow', () => {
     console.log(toRaw(nodes.value))
   }
 
+  function clearAll() {
+    readFile()
+  }
+
+  async function writeFile() {
+    let content = {
+      nodes: toRaw(nodes.value),
+      edges: toRaw(edges.value)
+    };
+    await invoke('write_file', { filePath: fileName.value, content: JSON.stringify(content)});
+  }
+
+  async function readFile() {
+    let res: string = await invoke('read_file', { filePath: fileName.value});
+    let {nodes: arrNode, edges: arrEdge}= JSON.parse(res);
+    nodes.value = arrNode;
+    edges.value = arrEdge;
+  }
+
+  watchEffect(() => {
+    sessionStorage.setItem("nodes", JSON.stringify(nodes.value))
+    sessionStorage.setItem("edges", JSON.stringify(edges.value))
+    sessionStorage.setItem("fileName", fileName.value)
+  })
+
   return {
     nodes,
     edges,
+    fileName,
     numOfNodes,
+    writeFile,
+    readFile,
     updateNodePosition,
     printNode,
     addNode,
-    changeEdgeData
+    changeEdgeData,
+    clearAll
   }
 });
 

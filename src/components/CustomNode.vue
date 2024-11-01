@@ -1,6 +1,9 @@
 <template>
-  <div class="custom-node">
-    {{ props.label }}
+  <div
+    class="custom-node"
+    :class="{ select: props.data.select}"
+  >
+    {{ props.data.label }}
   </div>
 </template>
 
@@ -8,7 +11,7 @@
 import { defineProps } from 'vue';
 
 const props = defineProps<{
-  label: string
+  data: any
 }>()
 </script>
 
@@ -17,11 +20,14 @@ const props = defineProps<{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 3em;
-  height: 3em;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: $primary-color;
   font-size: $node-font-size;
+  box-shadow: $shadow;
 }
-
+.select {
+  border: 2px solid blue;
+}
 </style>

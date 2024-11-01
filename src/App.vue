@@ -27,21 +27,6 @@ import SideMenu from './components/SideMenuPage/SideMenu.vue';
     </template>
   </Layout>
 </template>
-<style>
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  padding: 0;
-}
-
-@keyframes appear {
-  0% {
-  opacity: 0;
-  }
-  100% {
-  opacity: 1;
-}
-} 
+<style lang="scss">
+@import "./global.scss"
 </style>

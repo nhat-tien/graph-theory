@@ -49,7 +49,7 @@ const store = useAppMode();
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5px;
+  padding-top: 10px;
   gap: 10px;
 }
 
@@ -58,6 +58,7 @@ const store = useAppMode();
   width: 70%;
   padding: 9px;
   transition: all 0.2s ease-out;
+  cursor: pointer;
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }

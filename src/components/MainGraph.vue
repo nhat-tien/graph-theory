@@ -22,7 +22,7 @@ const {
 <template>
   <VueFlow :nodes="store.nodes" :edges="store.edges">
     <template #node-custom="props">
-      <CustomNode :label="props.data.label" />
+      <CustomNode :data="props.data" />
     </template>
     <template #edge-custom="props">
       <CustomEdge
@@ -34,7 +34,6 @@ const {
         :source-position="props.sourcePosition"
         :target-position="props.targetPosition"
         :data="props.data"
-        :marker-end="props.markerEnd"
       />
     </template>
     <Background variant="dots" />
@@ -81,6 +80,7 @@ const {
 .vue-flow__edge-path {
   stroke: #000;
 }
+
 .toolbar {
   position: fixed;
   width: 150px;
@@ -90,6 +90,8 @@ const {
   display: flex;
   flex-direction: row;
   align-items: center;
+  box-shadow: $shadow;
+  border-radius: 3px;
   input {
     border: none;
     font-size: 18px;

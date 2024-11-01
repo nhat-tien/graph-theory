@@ -1,6 +1,33 @@
 <template>
   <div class="float-panel">
-    <div v-tooltip:top="tooltipValue.addNode" class="float-panel__item" @click="addNode">
+    <div
+      v-tooltip:top="'Thêm cạnh'"
+      class="float-panel__item"
+      :class="{ select: modeStore.editMode == EditMode.AddEdge }"
+      @click="() => modeStore.changeMode(EditMode.AddEdge)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        width="24"
+        height="24"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m9 20.247 6-16.5"
+        />
+      </svg>
+    </div>
+    <div
+      v-tooltip:top="'Thêm đỉnh'"
+      class="float-panel__item"
+      @click="addOneNode()"
+    >
       <svg
         class="w-6 h-6 text-gray-800 dark:text-white"
         aria-hidden="true"
@@ -19,22 +46,43 @@
         />
       </svg>
     </div>
+    <div
+      v-tooltip:top="'Xóa'"
+      class="float-panel__item"
+      :class="{ select: modeStore.editMode == EditMode.Remove }"
+      @click="() => modeStore.changeMode(EditMode.Remove)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="size-6"
+        width="24"
+        height="24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import useGraphStore from '@/stores/graphStore';
+import useGraphStore from "@/stores/graphStore";
+import useEditMode, { EditMode }from "@/stores/editModeStore";
 
 const store = useGraphStore();
-const tooltipValue  = reactive({
-  addNode: "Thêm node"
-})
+const modeStore = useEditMode();
 
-const addNode = () => {
-  store.addNode(100,100);
-}
-
+const addOneNode = () => {
+  // modeStore.changeMode(EditMode.AddNode)
+  store.addNode(100, 100);
+};
 </script>
 
 <style scoped lang="scss">
@@ -59,10 +107,19 @@ const addNode = () => {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  position: relative;
   &:hover {
     svg {
       color: $secondary-color;
     }
+  }
+  &.select:after {
+    content: "";
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    background-color: $secondary-color;
+    bottom: -2px;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 import { useVueFlow, NodePositionChange, Edge } from "@vue-flow/core";
-import { toRaw, ref } from "vue";
+import { ref, toRaw } from "vue";
 import useGraphStore from "@/stores/graphStore.ts";
 
 
@@ -25,14 +25,14 @@ export default function useGraph() {
   });
 
   onNodeClick(({ event, node }) => {
-    console.log('Node clicked:', toRaw(node) , event);
   });
 
   onEdgeClick(({ event, edge }) => {
     event = event as MouseEvent;
-    console.log(edge);
+    edge = toRaw(edge);
     edgeSelected.value = edge;
     isToolbarDisplay.value = true;
+    edgeValueInput.value = edge.data.text;
     toolbarPosition.value = {
       ...toolbarPosition,
       x: event.clientX,
