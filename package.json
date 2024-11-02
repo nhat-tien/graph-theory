@@ -15,7 +15,8 @@
     "@vue-flow/controls": "^1.1.2",
     "@vue-flow/core": "^1.41.2",
     "pinia": "^2.2.4",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue3-toastify": "^0.2.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1",

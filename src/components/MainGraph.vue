@@ -6,6 +6,7 @@ import FloatBottomPanel from "@/components/FloatBottomPanel.vue";
 import { Background } from "@vue-flow/background";
 import { Controls } from "@vue-flow/controls";
 import useGraph from "@/composables/useGraph.ts";
+import useAddEdge from "@/composables/useAddEdge.ts";
 
 const {
   store,
@@ -15,6 +16,8 @@ const {
   changeEdgeData,
   closeToolbar,
 } = useGraph();
+
+const { isMarkDisplay } = useAddEdge();
 
 
 </script>
@@ -53,32 +56,20 @@ const {
       </svg>
     </div>
   </div>
+  <div v-if="isMarkDisplay" class="node-mark"></div>
   <FloatBottomPanel :toolbar="isToolbarDisplay" />
 </template>
-<style lang="scss">
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
-@import "@vue-flow/core/dist/style.css";
-@import "@vue-flow/core/dist/theme-default.css";
-
-.main-container {
-  width: 100%;
-  height: 100%;
-}
-
-.vue-flow__controls {
-  border-radius: 7px;
-}
-
-.vue-flow__controls-button:first-child {
-  border-radius: 7px 7px 0 0;
-}
-
-.vue-flow__controls-button:last-child {
-  border-radius: 0 0 7px 7px;
-}
-
-.vue-flow__edge-path {
-  stroke: #000;
+<style lang="scss" scoped>
+.node-mark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: $primary-color;
+  font-size: $node-font-size;
+  box-shadow: $shadow;
 }
 
 .toolbar {

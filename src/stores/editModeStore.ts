@@ -9,18 +9,18 @@ export enum EditMode {
 }
 
 const useEditMode = defineStore('edit-mode', () => {
-  const editMode = ref<EditMode>(EditMode.None);
+  const mode = ref<EditMode>(EditMode.None);
 
-  const changeMode = (mode: EditMode) => {
-    if(editMode.value == mode) {
-      editMode.value = EditMode.None;
+  const changeMode = (newMode: EditMode) => {
+    if(mode.value == newMode) {
+      mode.value = EditMode.None;
       return;
     }
-      editMode.value = mode;
+      mode.value = newMode;
   }
 
   return {
-    editMode,
+    mode,
     changeMode
   }
 });

@@ -3,7 +3,7 @@
     <div
       v-tooltip:top="'Thêm cạnh'"
       class="float-panel__item"
-      :class="{ select: modeStore.editMode == EditMode.AddEdge }"
+      :class="{ select: modeStore.mode == EditMode.AddEdge }"
       @click="() => modeStore.changeMode(EditMode.AddEdge)"
     >
       <svg
@@ -49,7 +49,7 @@
     <div
       v-tooltip:top="'Xóa'"
       class="float-panel__item"
-      :class="{ select: modeStore.editMode == EditMode.Remove }"
+      :class="{ select: modeStore.mode == EditMode.Remove }"
       @click="() => modeStore.changeMode(EditMode.Remove)"
     >
       <svg

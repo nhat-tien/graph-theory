@@ -112,6 +112,12 @@ const useGraphStore = defineStore('vue-flow', () => {
     })
   }
 
+  function removeNode(id: string) {
+    nodes.value = nodes.value.filter((node: Node) => {
+      return node.id != id;
+    })
+  }
+
   function changeEdgeData(id: string, data: string) {
     edges.value = edges.value.map((edge) => {
       if(edge.id == id) {
@@ -166,6 +172,7 @@ const useGraphStore = defineStore('vue-flow', () => {
     updateNodePosition,
     printNode,
     addNode,
+    removeNode,
     changeEdgeData,
     clearAll
   }

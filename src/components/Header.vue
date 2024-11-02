@@ -25,12 +25,14 @@
 import useGraphStore from '@/stores/graphStore';
 import { invoke } from '@tauri-apps/api/tauri';
 import { computed } from 'vue';
+import { toast } from 'vue3-toastify';
 
 const store = useGraphStore();
 
 const fileName = computed(() => {
-   let result = store.fileName.match(/([^\/]+)(?=\.[^\.]+$)/g);
-   return result?.[0]
+   // let result = store.fileName.match(/([^\/]+)(?=\.[^\.]+$)/g);
+   // return result?.[0]
+  return store.fileName
 })
 
 async function openFile() {
@@ -46,6 +48,10 @@ async function saveFile() {
     store.fileName = res;
   }
   await store.writeFile();
+  toast.success("Lưu thành công", {
+    autoClose: 1000,
+    position: toast.POSITION.TOP_RIGHT,
+  });
 }
 </script>
 
@@ -99,5 +105,6 @@ async function saveFile() {
   padding: 0.1em 1em;
   border-radius: 5px 5px 0 0;
   background-color: $gray-color;
+  font-size: 0.8rem;
 }
 </style>
