@@ -2,9 +2,11 @@ import { useVueFlow, NodePositionChange, Edge } from "@vue-flow/core";
 import { ref, toRaw } from "vue";
 import useGraphStore from "@/stores/graphStore.ts";
 import useEditMode, { EditMode } from "@/stores/editModeStore";
+import useAddEdgeStore from "@/stores/addEdgeStore";
 
 export default function useGraph() {
   const store = useGraphStore();
+  const addEdgeStore = useAddEdgeStore();
   const editModeStore = useEditMode();
   const { onNodesChange, onNodeClick, onEdgeClick} = useVueFlow();
   const isToolbarDisplay = ref<boolean>(false);
@@ -31,7 +33,18 @@ export default function useGraph() {
         store.removeNode(toRaw(node).id);
         break;
       case EditMode.AddEdge:
-        console.log(node)
+        if(addEdgeStore.call(node) == 1) {
+          let sourceId = addEdgeStore.sourceNode?.id;
+          let targetId = addEdgeStore.targetNode?.id;
+          if(sourceId == undefined || targetId == undefined) {
+            return;
+          }
+          store.addEdge(
+            sourceId,
+            targetId
+          )
+          addEdgeStore.reset()
+        }
         break;
     }
   });

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import useAddEdgeStore from "./addEdgeStore";
 
 export enum EditMode {
   None,
@@ -8,8 +9,10 @@ export enum EditMode {
   AddEdge,
 }
 
+
 const useEditMode = defineStore('edit-mode', () => {
   const mode = ref<EditMode>(EditMode.None);
+  const addEdgeStore = useAddEdgeStore();
 
   const changeMode = (newMode: EditMode) => {
     if(mode.value == newMode) {
@@ -18,6 +21,12 @@ const useEditMode = defineStore('edit-mode', () => {
     }
       mode.value = newMode;
   }
+
+  watch(mode,(newMode) => {
+    if(newMode != EditMode.AddEdge) {
+      addEdgeStore.reset()
+    }
+  });
 
   return {
     mode,

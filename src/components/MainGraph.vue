@@ -6,7 +6,8 @@ import FloatBottomPanel from "@/components/FloatBottomPanel.vue";
 import { Background } from "@vue-flow/background";
 import { Controls } from "@vue-flow/controls";
 import useGraph from "@/composables/useGraph.ts";
-import useAddEdge from "@/composables/useAddEdge.ts";
+import useAddEdgeStore from "@/stores/addEdgeStore.ts";
+import { computed, toRaw } from "vue";
 
 const {
   store,
@@ -17,7 +18,15 @@ const {
   closeToolbar,
 } = useGraph();
 
-const { isMarkDisplay } = useAddEdge();
+const addEdgeStore = useAddEdgeStore();
+
+const positionMark = computed(() => {
+   const position = toRaw(addEdgeStore.sourceNode?.position);
+  return {
+    x: position ? position.x : 0,
+    y: position ? position.y : 0
+  }
+});
 
 
 </script>
@@ -56,20 +65,17 @@ const { isMarkDisplay } = useAddEdge();
       </svg>
     </div>
   </div>
-  <div v-if="isMarkDisplay" class="node-mark"></div>
-  <FloatBottomPanel :toolbar="isToolbarDisplay" />
+  <div v-if="addEdgeStore.isMarkDisplay" class="node-mark" :style="{top: positionMark.y + 'px', left: positionMark.x + 'px'}"></div>
+  <FloatBottomPanel />
 </template>
 <style lang="scss" scoped>
 .node-mark {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: $primary-color;
-  font-size: $node-font-size;
-  box-shadow: $shadow;
+  border: 2px solid blue;
+  background-color: transparent;
+  position: absolute;
 }
 
 .toolbar {

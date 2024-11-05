@@ -37,8 +37,10 @@ const fileName = computed(() => {
 
 async function openFile() {
   const res: string = await invoke('open_file');
-  store.fileName = res;
-  await store.readFile();
+  if(res) {
+    store.fileName = res;
+    await store.readFile();
+  }
 }
 
 async function saveFile() {

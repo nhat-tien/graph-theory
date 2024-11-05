@@ -2,6 +2,7 @@ import { Edge, Node } from "@vue-flow/core";
 import { defineStore } from "pinia";
 import { ref, toRaw, computed, watchEffect } from "vue";
 import { invoke } from "@tauri-apps/api/tauri";
+import { toast } from "vue3-toastify";
 
 // function getDefaultNodes(): Node[] {
 // return [
@@ -133,12 +134,60 @@ const useGraphStore = defineStore('vue-flow', () => {
     })
   }
 
+  function selectNode(id: string) {
+    nodes.value = nodes.value.map((node) => {
+      if(node.id == id) {
+        return {
+          ...toRaw(node),
+          data: {
+            select: true 
+          }
+        }
+      } else {
+        return toRaw(node)
+      }
+    })
+  }
+
+  // function deselectNode() {
+  //   nodes.value = nodes.value.map((node) => {
+  //     if(node.id == id) {
+  //       return {
+  //         ...toRaw(node),
+  //         data: {
+  //           select: true 
+  //         }
+  //       }
+  //     } else {
+  //       return toRaw(node)
+  //     }
+  //   })
+  // }
+
   function printNode() {
     console.log(toRaw(nodes.value))
   }
 
   function clearAll() {
     readFile()
+  }
+
+  function addEdge(sourceId: string, targetId: string) {
+    let edgeExist = edges.value.filter((edge) => edge.id == `e${sourceId}->${targetId}`);
+    if (edgeExist.length != 0) {
+      toast.warning("Cạnh đã tồn tại");
+      return;
+    }
+    edges.value.push({
+      id: `e${sourceId}->${targetId}`,
+      source: `${sourceId}`,
+      target: `${targetId}`,
+      data: {
+        text: "",
+        marker: false,
+      },
+      type: "custom"
+    })
   }
 
   async function writeFile() {
@@ -174,7 +223,9 @@ const useGraphStore = defineStore('vue-flow', () => {
     addNode,
     removeNode,
     changeEdgeData,
-    clearAll
+    clearAll,
+    addEdge,
+    selectNode,
   }
 });
 
