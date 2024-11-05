@@ -114,9 +114,7 @@ const useGraphStore = defineStore('vue-flow', () => {
   }
 
   function removeNode(id: string) {
-    nodes.value = nodes.value.filter((node: Node) => {
-      return node.id != id;
-    })
+    nodes.value = nodes.value.filter((node: Node) => node.id != id);
   }
 
   function changeEdgeData(id: string, data: string) {
@@ -134,36 +132,6 @@ const useGraphStore = defineStore('vue-flow', () => {
     })
   }
 
-  function selectNode(id: string) {
-    nodes.value = nodes.value.map((node) => {
-      if(node.id == id) {
-        return {
-          ...toRaw(node),
-          data: {
-            select: true 
-          }
-        }
-      } else {
-        return toRaw(node)
-      }
-    })
-  }
-
-  // function deselectNode() {
-  //   nodes.value = nodes.value.map((node) => {
-  //     if(node.id == id) {
-  //       return {
-  //         ...toRaw(node),
-  //         data: {
-  //           select: true 
-  //         }
-  //       }
-  //     } else {
-  //       return toRaw(node)
-  //     }
-  //   })
-  // }
-
   function printNode() {
     console.log(toRaw(nodes.value))
   }
@@ -173,9 +141,11 @@ const useGraphStore = defineStore('vue-flow', () => {
   }
 
   function addEdge(sourceId: string, targetId: string) {
-    let edgeExist = edges.value.filter((edge) => edge.id == `e${sourceId}->${targetId}`);
+    let edgeExist = edges.value.filter((edge) => edge.id == `e${sourceId}->${targetId}` || edge.id == `e${targetId}->${sourceId}`);
     if (edgeExist.length != 0) {
-      toast.warning("Cạnh đã tồn tại");
+      toast.warning("Cạnh đã tồn tại", {
+        autoClose: 1000,
+      });
       return;
     }
     edges.value.push({
@@ -188,6 +158,10 @@ const useGraphStore = defineStore('vue-flow', () => {
       },
       type: "custom"
     })
+  }
+
+  function removeEdge(edgeId: string) {
+    edges.value = edges.value.filter((edge: Edge) => edge.id != edgeId)
   }
 
   async function writeFile() {
@@ -225,7 +199,7 @@ const useGraphStore = defineStore('vue-flow', () => {
     changeEdgeData,
     clearAll,
     addEdge,
-    selectNode,
+    removeEdge
   }
 });
 

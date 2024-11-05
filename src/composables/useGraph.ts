@@ -63,6 +63,10 @@ export default function useGraph() {
           y: event.clientY,
         }
         break;
+      case EditMode.Remove:
+        edge = toRaw(edge);
+        store.removeEdge(edge.id);
+        break;
     }
   });
 
