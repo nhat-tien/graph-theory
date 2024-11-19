@@ -73,10 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import useGraphStore from "@/stores/graphStore";
+import useMainGraphStore from "@/stores/mainGraphStore";
 import useEditMode, { EditMode }from "@/stores/editModeStore";
 
-const store = useGraphStore();
+const store = useMainGraphStore();
 const modeStore = useEditMode();
 
 const addOneNode = () => {

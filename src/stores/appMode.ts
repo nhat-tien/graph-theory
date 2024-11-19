@@ -9,7 +9,6 @@ export enum AppMode {
 const useAppMode = defineStore('app-mode', () => {
   const appMode = ref<AppMode>(AppMode.Edit);
   const changeAppMode = (newAppMode: AppMode) => {
-    console.log(appMode);
     appMode.value = newAppMode;
   }
   return {

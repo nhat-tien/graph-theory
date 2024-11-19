@@ -27,8 +27,6 @@ const positionMark = computed(() => {
     y: position ? position.y : 0
   }
 });
-
-
 </script>
 
 <template>

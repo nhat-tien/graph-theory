@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Layout from './components/Layout.vue';
-import MainGraph from './components/MainGraph.vue';
+import Graph from './components/Graph.vue';
 import MainContent from './components/MainContent.vue';
 import Header from './components/Header.vue';
 import SideColumn from '@/components/SideColumn.vue';
@@ -21,7 +21,7 @@ import SideMenu from './components/SideMenuPage/SideMenu.vue';
           <SideMenu />
         </template>
         <template #graph>
-          <MainGraph />
+          <Graph />
         </template>
       </MainContent>
     </template>

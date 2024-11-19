@@ -1,11 +1,11 @@
 import { useVueFlow, NodePositionChange, Edge } from "@vue-flow/core";
 import { ref, toRaw } from "vue";
-import useGraphStore from "@/stores/graphStore.ts";
+import useMainGraphStore from "@/stores/mainGraphStore";
 import useEditMode, { EditMode } from "@/stores/editModeStore";
 import useAddEdgeStore from "@/stores/addEdgeStore";
 
 export default function useGraph() {
-  const store = useGraphStore();
+  const store = useMainGraphStore();
   const addEdgeStore = useAddEdgeStore();
   const editModeStore = useEditMode();
   const { onNodesChange, onNodeClick, onEdgeClick} = useVueFlow();

@@ -2,8 +2,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-
 pub mod file_command;
+pub mod kruskal;
+
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -18,6 +19,7 @@ fn main() {
             file_command::get_location_to_save,
             file_command::read_file,
             file_command::write_file,
+            kruskal::kruskal
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

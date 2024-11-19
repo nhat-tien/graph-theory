@@ -22,12 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import useGraphStore from '@/stores/graphStore';
+import useMainGraphStore from '@/stores/mainGraphStore';
 import { invoke } from '@tauri-apps/api/tauri';
 import { computed } from 'vue';
 import { toast } from 'vue3-toastify';
 
-const store = useGraphStore();
+const store = useMainGraphStore();
 
 const fileName = computed(() => {
    // let result = store.fileName.match(/([^\/]+)(?=\.[^\.]+$)/g);

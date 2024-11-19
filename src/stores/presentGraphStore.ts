@@ -4,67 +4,8 @@ import { ref, toRaw, computed, watchEffect } from "vue";
 import { invoke } from "@tauri-apps/api/tauri";
 import { toast } from "vue3-toastify";
 
-// function getDefaultNodes(): Node[] {
-// return [
-//     {
-//       id: "1",
-//       type: "custom",
-//       position: { x: 250, y: 5 },
-//       data: { label: "1" },
-//     },
-//     {
-//       id: "2",
-//       type: "custom",
-//       position: { x: 50, y: 250 },
-//       data: { label: "2" },
-//     },
-//     {
-//       id: "3",
-//       type: "custom",
-//       position: { x: 300, y: 250},
-//       data: { label: "3" },
-//     },
-//
-// ]
-// }
-//
-//
-// function getDefaultEdges(): Edge[] {
-// return [
-//     {
-//       id: "e1->2",
-//       source: "1",
-//       target: "2",
-//       data: {
-//         text: "2",
-//         marker: true
-//       },
-//       type: "custom",
-//     },
-//     {
-//       id: "e1->3",
-//       source: "1",
-//       target: "3",
-//       data: {
-//         text: "10",
-//         marker: false
-//       },
-//       type: "custom",
-//     },
-//     {
-//       id: "e2->3",
-//       source: "2",
-//       target: "3",
-//       data: {
-//         text: "100",
-//         marker: true
-//       },
-//       type: "custom",
-//     },
-// ]
-// }
 
-const useGraphStore = defineStore('vue-flow', () => {
+const usePresentGraphStore = defineStore('vue-flow', () => {
 
   const nodes = ref<Node[]>([]);
 
@@ -123,6 +64,7 @@ const useGraphStore = defineStore('vue-flow', () => {
         return {
           ...toRaw(edge),
           data: {
+            ...toRaw(edge.data),
             text: data,
           }
         }
@@ -203,4 +145,4 @@ const useGraphStore = defineStore('vue-flow', () => {
   }
 });
 
-export default useGraphStore;
+export default usePresentGraphStore;
