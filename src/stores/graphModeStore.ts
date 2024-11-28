@@ -13,9 +13,14 @@ const useGraphModeStore = defineStore('graph-mod', () => {
     mode.value = newMode;
   }
 
+  function resetToNormal() {
+    mode.value = GraphMode.NormalMode
+  }
+
   return {
     mode,
-    setMode
+    setMode,
+    resetToNormal
   }
 });
 

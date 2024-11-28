@@ -4,14 +4,24 @@ import CustomNode from "@/components/CustomNode.vue";
 import CustomEdge from "@/components/CustomEdge.vue";
 import { Background } from "@vue-flow/background";
 import useMainGraphStore from "@/stores/mainGraphStore";
+import usePresentGraphStore from "@/stores/presentGraphStore";
+import { onMounted, onUnmounted } from "vue";
 
+const store = usePresentGraphStore();
 const { edges, nodes }= useMainGraphStore();
 
+onMounted(() => {
+  store.setup(nodes,edges);
+});
+
+onUnmounted(() => {
+  store.clear();
+});
 
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges">
+  <VueFlow :nodes="store.nodes" :edges="store.edges">
     <template #node-custom="props">
       <CustomNode :data="props.data" />
     </template>

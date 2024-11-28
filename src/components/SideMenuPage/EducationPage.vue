@@ -7,37 +7,27 @@
     </div>
     <div class="divider"></div>
     <div class="algo-container">
-      <button @click="grapMode.setMode(GraphMode.PresenMode)">Click</button>
-      <button @click="grapMode.setMode(GraphMode.NormalMode)">Click Again</button>
+      <Kruskal v-if="selectedItem === 'Kruskal'" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { invoke } from '@tauri-apps/api/tauri';
-import { ref, toRaw } from 'vue';
-import useMainGraphStore from '@/stores/mainGraphStore';
-import { GraphMode } from '@/stores/graphModeStore';
-import useGraphModeStore from '@/stores/graphModeStore';
+import { ref } from 'vue';
+import Kruskal from '../AlgorithmPage/Kruskal.vue';
 
 const listOfAlgo = ref([
   "Prime",
   "Kruskal"
 ]);
 
-const grapMode = useGraphModeStore();
 
-const store = useMainGraphStore();
+// const store = useMainGraphStore();
 
-const selectedItem = ref<string>(listOfAlgo.value[0]);
+const selectedItem = ref<string>("");
 
 function selectItem(algoName: string) {
   selectedItem.value = algoName;
-}
-
-async function test() {
-  const res = await invoke("kruskal", {graphFromFe: toRaw(store.edges)});
-  console.log(res);
 }
 
 </script>
@@ -69,6 +59,7 @@ async function test() {
 .algo-container {
   /* background-color: blue; */
   flex-grow: 1;
+  padding: 5px;
 }
 .divider {
   height: 1px;
