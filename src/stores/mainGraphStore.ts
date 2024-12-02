@@ -141,10 +141,25 @@ const useMainGraphStore = defineStore('vue-flow', () => {
     readFile()
   }
 
+  function closeFile() {
+    edges.value = [];
+    nodes.value = [];
+    fileName.value = "";
+    sessionStorage.removeItem("nodes");
+    sessionStorage.removeItem("edges");
+    sessionStorage.removeItem("fileName");
+  }
+
   function addEdge(sourceId: string, targetId: string) {
     let edgeExist = edges.value.filter((edge) => edge.id == `e${sourceId}->${targetId}` || edge.id == `e${targetId}->${sourceId}`);
     if (edgeExist.length != 0) {
       toast.warning("Cạnh đã tồn tại", {
+        autoClose: 1000,
+      });
+      return;
+    }
+    if(sourceId == targetId) {
+      toast.warning("Tính năng cạnh khuyên chưa được phát triển", {
         autoClose: 1000,
       });
       return;
@@ -200,7 +215,8 @@ const useMainGraphStore = defineStore('vue-flow', () => {
     changeEdgeData,
     clearAll,
     addEdge,
-    removeEdge
+    removeEdge,
+    closeFile
   }
 });
 

@@ -4,7 +4,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import useTimer from './useTimer';
 import { toRaw, ref, computed, watch } from 'vue';
 
-interface TimeLineFrame {
+export interface TimeLineFrame {
   include: boolean,
   edge: {
     id: string,
@@ -13,6 +13,7 @@ interface TimeLineFrame {
 }
 
 export default function useKruskalAnimation() {
+
   const timeLine = ref<TimeLineFrame[]>([]);
 
   const graphModeStore = useGraphModeStore();
@@ -21,7 +22,11 @@ export default function useKruskalAnimation() {
 
   const store = usePresentGraphStore();
 
-  const { currentCount, startTimer, setTime, stopTimer, isRunning} = useTimer();
+  const totalWeight = ref(0);
+
+  const isRunning = ref(false);
+
+  const { currentCount, startTimer, setTime, stopTimer, isEnd} = useTimer();
 
   const currentFrame = computed<TimeLineFrame | null>(() => {
     if(currentCount.value <= store.edges.length) {
@@ -36,7 +41,9 @@ export default function useKruskalAnimation() {
   async function start() {
     if(!isStarted.value) {
       await setup();
-    }
+      isStarted.value = true;
+      isRunning.value = true;
+    };
       startTimer();
   };
 
@@ -47,7 +54,12 @@ export default function useKruskalAnimation() {
   }
 
   function stop() {
-    graphModeStore.setMode(GraphMode.NormalMode);
+    let total = 0;
+    timeLine.value.forEach((edge) => total += edge.include ? edge.edge.weight : 0);
+    totalWeight.value = total;
+    // graphModeStore.setMode(GraphMode.NormalMode);
+    pause()
+    setTime(0)
   };
 
   function pause() {
@@ -58,10 +70,28 @@ export default function useKruskalAnimation() {
 
   };
 
+  // watch(isRunning, () => {
+  //   if(!isRunning.value) {
+  //     graphModeStore.setMode(GraphMode.NormalMode);
+  //   }
+  // })
+
   watch(currentCount, () => {
-    console.log(currentCount.value)
+    if(currentCount.value >= store.edges.length) {
+      stop();
+      isRunning.value = false;
+    }
   })
 
+  // watch(isEnd, () => {
+  //   if(isEnd.value) {
+  //     let total = 0;
+  //     timeLine.value.forEach((edge) => total += edge.include ? edge.edge.weight : 0);
+  //     totalWeight.value = total;
+  //     graphModeStore.setMode(GraphMode.NormalMode);
+  //   }
+  // });
+  //
   watch(currentFrame, () => {
     if(beforeFrame.value != null && beforeFrame.value.include) {
       store.setHighLight(beforeFrame.value.edge.id, "solid");
@@ -80,6 +110,8 @@ export default function useKruskalAnimation() {
     stop,
     reset,
     pause,
-    isRunning
+    isRunning,
+    timeLine,
+    totalWeight
   }
 }

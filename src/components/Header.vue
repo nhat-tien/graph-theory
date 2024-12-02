@@ -6,6 +6,7 @@
       <ul class="menu">
         <li @click="saveFile">Save</li>
         <li @click="openFile">Open file</li>
+        <li @click="store.closeFile">Close file</li>
       </ul>
     </div>
     <div class="header__item">

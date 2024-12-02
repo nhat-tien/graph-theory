@@ -6,6 +6,7 @@ export default function useTimer() {
   const currentCount = ref(0);
   const intervalId = ref<any>(null);
   const isRunning = ref<boolean>(false);
+  const isEnd = ref(false);
 
   function setTime(setEnd: number) {
     end.value = setEnd
@@ -15,7 +16,7 @@ export default function useTimer() {
     if(end.value == 0) {
       return;
     }
-    if(!isRunning.value && currentCount.value <= end.value) {
+    if(!isRunning.value && currentCount.value < end.value) {
       isRunning.value = true;
       intervalId.value = setInterval(() => {
         if(currentCount.value < end.value) {
@@ -29,6 +30,9 @@ export default function useTimer() {
 
   function stopTimer() {
     if(isRunning.value) {
+      if(currentCount.value >= end.value) {
+        isEnd.value = true;
+      }
       isRunning.value = false;
       clearInterval(intervalId.value);
       intervalId.value = null;
@@ -47,5 +51,6 @@ export default function useTimer() {
     resetTimer,
     setTime,
     isRunning,
+    isEnd
   }
 }
