@@ -1,8 +1,6 @@
-import { VNode } from "vue";
-
 
 export const Tooltip = {
-   mounted(el :HTMLElement, binding: any, vnode: VNode) {
+   mounted(el :HTMLElement, binding: any) {
     const tooltipElementHTMLString = `
       <div style="width: max-content; background-color: #fff; color: #000; font-size: 0.8rem; padding: 0.2em 0.5em; border-radius: 5px; border: 1px solid hsl(153, 47%, 60%)">
           ${binding.value ?? ""}

@@ -9,4 +9,3 @@ interface Edge {
   }
 }
 
-function convertEdgeGraph()
