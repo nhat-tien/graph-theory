@@ -67,7 +67,7 @@ function handleMouseDown(e: MouseEvent) {
     height: calc(100% + 2px);
     left: -5px;
     top: -1px;
-    z-index: 9999;
+    z-index: 1;
   }
 }
 

@@ -88,6 +88,22 @@ const useMainGraphStore = defineStore('vue-flow', () => {
 
   const numOfNodes = computed(() => nodes.value.length);
 
+  function resetPosition() {
+    const nodesFromStorage = sessionStorage.getItem("nodes");
+    const edgesFromStorage = sessionStorage.getItem("edges");
+    const fileNameFromStorage = sessionStorage.getItem("fileName");
+
+    if(nodesFromStorage) {
+      nodes.value = JSON.parse(nodesFromStorage);
+    } 
+    if(edgesFromStorage) {
+      edges.value = JSON.parse(edgesFromStorage);
+    } 
+    if(fileNameFromStorage) {
+      fileName.value = fileNameFromStorage
+    }
+  }
+
   function updateNodePosition(id: string, x: number, y: number) {
     nodes.value = nodes.value.map((node) => {
       if(node.id == id) {
@@ -216,7 +232,8 @@ const useMainGraphStore = defineStore('vue-flow', () => {
     clearAll,
     addEdge,
     removeEdge,
-    closeFile
+    closeFile,
+    resetPosition
   }
 });
 

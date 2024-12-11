@@ -2,35 +2,6 @@ use std::fs;
 
 use tauri::api::dialog::blocking::FileDialogBuilder;
 
-// struct NodeData {
-//     label: String
-// }
-//
-// struct EdgeData {
-//     text: String,
-//     marker: bool
-// }
-//
-// struct Position {
-//     x: i32,
-//     y: i32,
-// }
-//
-// struct Node {
-//     id: String,
-//     type_name: String,
-//     position: Position,
-//     data: NodeData
-// }
-//
-// struct Edge {
-//     id: String,
-//     source: String,
-//     target: String,
-//     data: EdgeData,
-//     type_name: String
-// } 
-
 #[tauri::command]
 pub async fn open_file() -> Option<String> {
     let file_path = FileDialogBuilder::new()

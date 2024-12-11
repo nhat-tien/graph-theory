@@ -8,7 +8,7 @@ export default function useGraph() {
   const store = useMainGraphStore();
   const addEdgeStore = useAddEdgeStore();
   const editModeStore = useEditMode();
-  const { onNodesChange, onNodeClick, onEdgeClick} = useVueFlow();
+  const { onNodesChange, onNodeClick, onEdgeClick, setViewport } = useVueFlow();
   const isToolbarDisplay = ref<boolean>(false);
   const toolbarPosition = ref({
     x: 0,
@@ -33,6 +33,7 @@ export default function useGraph() {
         store.removeNode(toRaw(node).id);
         break;
       case EditMode.AddEdge:
+        setViewport({x: 0, y: 0, zoom: 1});
         if(addEdgeStore.call(node) == 1) {
           let sourceId = addEdgeStore.sourceNode?.id;
           let targetId = addEdgeStore.targetNode?.id;

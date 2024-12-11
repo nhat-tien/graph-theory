@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import About from './About.vue';
+import useAbout from '@/stores/openAboutStore';
+const store = useAbout();
+</script>
 
 <template>
   <div class="app-container">
@@ -16,6 +20,7 @@
     <div class="footer">
       <slot name="footer"></slot>
     </div>
+    <About v-if="store.isDisplayAbout" @close="store.handleClose()"/>
   </div>
 </template>
 

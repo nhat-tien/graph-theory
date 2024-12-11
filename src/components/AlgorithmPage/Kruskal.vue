@@ -64,15 +64,17 @@
     </button>
   </div>
   <div class="table-container">
-    <table>
-      <tr>
-        <th>Cạnh</th>
-        <th>Trọng số</th>
-      </tr>
-      <tr v-for="edge in timeLine">
-        <td>{{edge.edge.id}}</td>
-        <td>{{edge.edge.weight}}</td>
-      </tr>
+    <table v-if="timeLine.length != 0">
+      <tbody>
+        <tr>
+          <th>Cạnh</th>
+          <th>Trọng số</th>
+        </tr>
+        <tr v-for="edge in timeLine">
+          <td>{{ edge.edge.id }}</td>
+          <td>{{ edge.edge.weight }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
   <p v-if="totalWeight > 0">Tổng trọng số: {{ totalWeight }}</p>
@@ -80,10 +82,11 @@
 
 <script setup lang="ts">
 import useKruskalAnimation from "@/composables/useKruskalAnimation";
-import useGraphModeStore, { GraphMode } from '@/stores/graphModeStore';
-import { computed, onMounted} from "vue";
+import useGraphModeStore, { GraphMode } from "@/stores/graphModeStore";
+import { computed, onMounted } from "vue";
 
-const { start, isRunning, pause, stop, timeLine, totalWeight } = useKruskalAnimation();
+const { start, isRunning, pause, stop, timeLine, totalWeight } =
+  useKruskalAnimation();
 
 const graphModeStore = useGraphModeStore();
 
@@ -94,7 +97,6 @@ const isPlayEnable = computed(() => !isRunning.value);
 onMounted(() => {
   graphModeStore.setMode(GraphMode.PresenMode);
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -107,7 +109,7 @@ button {
 
 button:disabled {
   svg {
-    fill: #a5a8a6 
+    fill: #a5a8a6;
   }
 }
 
@@ -123,12 +125,15 @@ button:disabled {
   justify-content: center;
 }
 
-table, td, th {
+table,
+td,
+th {
   border: 1px solid black;
   border-collapse: collapse;
 }
 
-td, th { 
+td,
+th {
   padding: 0.5em 1em;
 }
 

@@ -1,50 +1,25 @@
 #![allow(dead_code)]
 use std::collections::HashSet;
-use serde::{Deserialize, Serialize};
+use crate::edge::{Edge, EdgeResponse, EdgeDataResponse};
 
-
-#[derive(Deserialize)]
-pub struct EdgeData {
-    text: String,
-    marker: bool
+fn parse_i32(string: &str) -> Result<i32, String> {
+    string.parse::<i32>().map_err(|_| "Lỗi quá trình phân tích số".into())
 }
 
-#[derive(Deserialize)]
-pub struct Edge {
-    id: String,
-    source: String,
-    target: String,
-    data: EdgeData,
-    #[serde(rename="type")]
-    type_name: String,
-}
-
-#[derive(Serialize)]
-pub struct EdgeDataResponse {
-    id: String,
-    weight: i32
-}
-
-#[derive(Serialize)]
-pub struct EdgeResponse {
-    include: bool,
-    edge: EdgeDataResponse
-}
-
-fn convert_graph_to_tuple(graph: Vec<Edge>) -> Vec<(String, i32, i32, i32)> {
+fn convert_graph_to_tuple(graph: Vec<Edge>) -> Result<Vec<(String, i32, i32, i32)>, String> {
     let mut graph_tuple = vec![];
     for item in graph.iter() {
-        let target = item.target.parse::<i32>().unwrap();
-        let source = item.source.parse::<i32>().unwrap();
-        let weight = item.data.text.parse::<i32>().unwrap();
+        let target = parse_i32(&item.target)?;
+        let source = parse_i32(&item.source)?;
+        let weight =parse_i32(&item.data.text)?;
         graph_tuple.push((item.id.clone(), source, target, weight));
     }
-    graph_tuple
+    Ok(graph_tuple)
 }
 
 #[tauri::command]
-pub fn kruskal(graph_from_fe: Vec<Edge>) -> Vec<EdgeResponse> {
-    let mut graph = convert_graph_to_tuple(graph_from_fe);
+pub fn kruskal(graph_from_fe: Vec<Edge>) -> Result<Vec<EdgeResponse>, String> {
+    let mut graph = convert_graph_to_tuple(graph_from_fe)?;
     graph.sort_by_key(|k| k.3);
     let mut graph_result = vec![];
     let mut visited = HashSet::new();
@@ -80,5 +55,5 @@ pub fn kruskal(graph_from_fe: Vec<Edge>) -> Vec<EdgeResponse> {
         }
     }
 
-    graph_result
+    Ok(graph_result)
 }

@@ -16,7 +16,7 @@
       </ul>
     </div>
     <div class="header__item">
-      <div>About</div>
+      <div @click="aboutStore.handleOpen()">About</div>
     </div>
     <div class="file-name">{{ fileName }}</div>
   </div>
@@ -24,11 +24,13 @@
 
 <script setup lang="ts">
 import useMainGraphStore from '@/stores/mainGraphStore';
+import useAbout from "@/stores/openAboutStore";
 import { invoke } from '@tauri-apps/api/tauri';
 import { computed } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const store = useMainGraphStore();
+const aboutStore = useAbout();
 
 const fileName = computed(() => {
    // let result = store.fileName.match(/([^\/]+)(?=\.[^\.]+$)/g);
@@ -87,9 +89,11 @@ async function saveFile() {
     display: none;
     background-color: $primary-color;
     border: $border;
+    border-radius: 0 0 10px 10px;
     list-style-type: none;
     flex-direction: column;
     width: max-content;
+    box-shadow: $shadow;
     li {
     padding: 0.5em 1em;
       &:hover {

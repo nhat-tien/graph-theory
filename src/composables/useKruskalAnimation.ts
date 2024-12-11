@@ -1,8 +1,9 @@
 import usePresentGraphStore from '@/stores/presentGraphStore';
-import useGraphModeStore, { GraphMode } from '@/stores/graphModeStore';
+// import useGraphModeStore, { GraphMode } from '@/stores/graphModeStore';
 import { invoke } from '@tauri-apps/api/tauri';
 import useTimer from './useTimer';
 import { toRaw, ref, computed, watch } from 'vue';
+import { toast } from 'vue3-toastify';
 
 export interface TimeLineFrame {
   include: boolean,
@@ -16,7 +17,7 @@ export default function useKruskalAnimation() {
 
   const timeLine = ref<TimeLineFrame[]>([]);
 
-  const graphModeStore = useGraphModeStore();
+  // const graphModeStore = useGraphModeStore();
 
   const isStarted = ref(false);
 
@@ -26,7 +27,7 @@ export default function useKruskalAnimation() {
 
   const isRunning = ref(false);
 
-  const { currentCount, startTimer, setTime, stopTimer, isEnd} = useTimer();
+  const { currentCount, startTimer, setTime, stopTimer } = useTimer();
 
   const currentFrame = computed<TimeLineFrame | null>(() => {
     if(currentCount.value <= store.edges.length) {
@@ -39,18 +40,32 @@ export default function useKruskalAnimation() {
   const beforeFrame = ref<TimeLineFrame | null>(null);
 
   async function start() {
+    try {
+
     if(!isStarted.value) {
       await setup();
       isStarted.value = true;
       isRunning.value = true;
     };
       startTimer();
+    } catch(e) {
+      toast.error(e, {
+        autoClose: 1000,
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      isStarted.value = true;
+      isRunning.value = false;
+    }
   };
 
   async function setup() {
+    try {
     const res: TimeLineFrame[] = await invoke("kruskal", {graphFromFe: toRaw(store.edges)});
     timeLine.value = res;
     setTime(store.edges.length + 1);
+    } catch(e) {
+      throw e;
+    }
   }
 
   function stop() {
