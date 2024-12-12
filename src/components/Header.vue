@@ -93,7 +93,9 @@ async function saveFile() {
     list-style-type: none;
     flex-direction: column;
     width: max-content;
-    box-shadow: $shadow;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 10px 16px,
+  rgba(17, 17, 26, 0.05) 0px 20px 32px;
+;
     li {
     padding: 0.5em 1em;
       &:hover {

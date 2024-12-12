@@ -71,7 +71,7 @@
           <th>Trọng số</th>
         </tr>
         <tr v-for="edge in timeLine">
-          <td>{{ edge.edge.id }}</td>
+          <td>{{ changeEdgeIdDisplay(edge.edge.id) }}</td>
           <td>{{ edge.edge.weight }}</td>
         </tr>
       </tbody>
@@ -97,6 +97,16 @@ const isPlayEnable = computed(() => !isRunning.value);
 onMounted(() => {
   graphModeStore.setMode(GraphMode.PresenMode);
 });
+
+function changeEdgeIdDisplay(input: string): string {
+  const firstNumberRegex = /(?<=e)\d+/g;
+  const firstNumber = firstNumberRegex.exec(input);
+  const secondNumberRegex = /(?<=->)\d+/g;
+  const secondNumber = secondNumberRegex.exec(input);
+  
+  return `(${firstNumber}, ${secondNumber})`;
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -139,5 +149,6 @@ th {
 
 p {
   text-align: center;
+  margin-top: 1em;
 }
 </style>

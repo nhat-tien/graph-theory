@@ -5,6 +5,7 @@
 pub mod file_command;
 pub mod kruskal;
 pub mod edge;
+pub mod graph;
 pub mod prim;
 
 
