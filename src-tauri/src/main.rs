@@ -5,7 +5,7 @@
 pub mod file_command;
 pub mod kruskal;
 pub mod edge;
-// pub mod prim;
+pub mod prim;
 
 
 #[tauri::command]
