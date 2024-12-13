@@ -1,10 +1,10 @@
 use std::collections::{HashMap, HashSet};
 use crate::edge::{Edge, EdgeDataResponse, EdgeResponse};
-use crate::graph::{Graph, GraphEdge, is_cycle, add_edge_graph, convert_graph_to_list_of_edge};
+use crate::graph::{Graph, GraphEdge, is_cycle, add_edge_graph, convert_graph_from_fe_to_list_of_edge};
 
 #[tauri::command]
 pub fn kruskal(graph_from_fe: Vec<Edge>) -> Result<Vec<EdgeResponse>, String> {
-    let mut edges: Vec<GraphEdge> = convert_graph_to_list_of_edge(&graph_from_fe)?;
+    let mut edges: Vec<GraphEdge> = convert_graph_from_fe_to_list_of_edge(&graph_from_fe)?;
     let mut graph: Graph<i32, GraphEdge> = HashMap::new();
 
     edges.sort_by_key(|edge| edge.weight);

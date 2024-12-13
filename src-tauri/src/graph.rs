@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use crate::edge::Edge;
 
 #[derive(Eq, Clone)]
 pub struct GraphEdge {
@@ -75,7 +76,7 @@ fn parse_i32(string: &str) -> Result<i32, String> {
         .map_err(|_| "Error: format number".into())
 }
 
-pub fn convert_graph_to_list_of_edge(graph: &Vec<Edge>) -> Result<Vec<GraphEdge>, String> {
+pub fn convert_graph_from_fe_to_list_of_edge(graph: &Vec<Edge>) -> Result<Vec<GraphEdge>, String> {
     let mut list_of_edge = vec![];
     for item in graph.iter() {
         let target = parse_i32(&item.target)?;
