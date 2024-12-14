@@ -27,19 +27,6 @@
 <script setup lang="ts">
 import { open } from "@tauri-apps/api/shell";
 
-// onMounted(() => {
-//   handlerClick.value = (e: MouseEvent) => {
-//     if(!document.getElementById("modal")?.contains(e.target as Node)) {
-//       emit("close");
-//     }
-//   }
-//   document.addEventListener("click", handlerClick.value);
-// });
-//
-// onUnmounted(() => {
-//   document.removeEventListener("click", handlerClick.value)
-// });
-
 function openLinkGithub() {
   open("https://github.com/nhat-tien");
 }
