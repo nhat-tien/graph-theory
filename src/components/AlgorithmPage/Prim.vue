@@ -67,29 +67,22 @@
 </template>
 
 <script setup lang="ts">
-import usePrimAnimation from "@/composables/usePrimAnimation";
-import useGraphModeStore, { GraphMode } from "@/stores/graphModeStore";
-import { computed, onMounted } from "vue";
-
+import useGraphModeStore, { GraphMode } from '@/stores/graphModeStore';
+import { onMounted, computed } from 'vue';
+import usePrimAnimation from '@/composables/usePrimAnimation';
 
 const graphModeStore = useGraphModeStore();
+const { start, totalWeight, isRunning, pause, stop,} =
+  usePrimAnimation();
 
 const isStopEnable = computed(() => isRunning.value);
 const isPauseEnable = computed(() => isRunning.value);
 const isPlayEnable = computed(() => !isRunning.value);
 
+
 onMounted(() => {
   graphModeStore.setMode(GraphMode.PresenMode);
 });
-
-function changeEdgeIdDisplay(input: string): string {
-  const firstNumberRegex = /(?<=e)\d+/g;
-  const firstNumber = firstNumberRegex.exec(input);
-  const secondNumberRegex = /(?<=->)\d+/g;
-  const secondNumber = secondNumberRegex.exec(input);
-  
-  return `(${firstNumber}, ${secondNumber})`;
-}
 
 </script>
 

@@ -43,6 +43,7 @@ export default function useKruskalAnimation() {
     try {
 
     if(!isStarted.value) {
+      store.removeHighLightAll()
       await setup();
       isStarted.value = true;
       isRunning.value = true;
@@ -96,17 +97,8 @@ export default function useKruskalAnimation() {
       stop();
       isRunning.value = false;
     }
-  })
+  });
 
-  // watch(isEnd, () => {
-  //   if(isEnd.value) {
-  //     let total = 0;
-  //     timeLine.value.forEach((edge) => total += edge.include ? edge.edge.weight : 0);
-  //     totalWeight.value = total;
-  //     graphModeStore.setMode(GraphMode.NormalMode);
-  //   }
-  // });
-  //
   watch(currentFrame, () => {
     if(beforeFrame.value != null && beforeFrame.value.include) {
       store.setHighLight(beforeFrame.value.edge.id, "solid");

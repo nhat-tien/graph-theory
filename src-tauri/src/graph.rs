@@ -11,7 +11,7 @@ pub struct GraphEdge {
 
 impl Ord for GraphEdge {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.weight.cmp(&other.weight).reverse()
+        self.weight.cmp(&other.weight)
     }
 }
 
