@@ -59,7 +59,7 @@ export default function usePrimAnimation() {
 
   async function setup() {
     try {
-    const res: TimeLineFrame[] = await invoke("prim", {graphFromFe: toRaw(store.edges), startPoint: 1});
+    const res: TimeLineFrame[] = await invoke("prim", {graphFromFe: toRaw(store.edges), startPoint: store.selectedNode});
     timeLine.value = res;
     setTime(store.edges.length + 1);
     } catch(e) {

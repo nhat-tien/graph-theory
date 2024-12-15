@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import { VueFlow } from "@vue-flow/core";
+import { useVueFlow, VueFlow } from "@vue-flow/core";
 import CustomNode from "@/components/CustomNode.vue";
 import CustomEdge from "@/components/CustomEdge.vue";
 import { Background } from "@vue-flow/background";
 import useMainGraphStore from "@/stores/mainGraphStore";
 import usePresentGraphStore from "@/stores/presentGraphStore";
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, toRaw } from "vue";
 
 const store = usePresentGraphStore();
-const { edges, nodes }= useMainGraphStore();
+const { edges, nodes } = useMainGraphStore();
+const { onNodeClick } = useVueFlow();
 
 onMounted(() => {
-  store.setup(nodes,edges);
+  store.setup(nodes, edges);
 });
 
 onUnmounted(() => {
   store.clear();
 });
 
+onNodeClick(({ node }) => {
+  store.setSelectedNode(parseInt(toRaw(node).id));
+});
 </script>
 
 <template>

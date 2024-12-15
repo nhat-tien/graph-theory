@@ -40,6 +40,7 @@ function selectItem(algoName: string) {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .choose-algo {
   font-size: 1rem;
@@ -59,9 +60,9 @@ function selectItem(algoName: string) {
   }
 }
 .algo-container {
-  /* background-color: blue; */
-  flex-grow: 1;
-  padding: 5px;
+  padding: 5px 10px 5px 20px;
+  overflow-y: auto;
+  height: 80%;
 }
 .divider {
   height: 1px;

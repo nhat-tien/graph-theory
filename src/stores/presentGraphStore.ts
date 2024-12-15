@@ -8,6 +8,10 @@ const usePresentGraphStore = defineStore('presentation-graph', () => {
 
   const edges = ref<Edge[]>([]);
 
+  const selectedNode = ref(1);
+
+  const disableSetSelectedNode = ref(false);
+
   function setup(new_nodes: Node[], new_edges: Edge[]) {
     nodes.value = new_nodes;
     edges.value = new_edges;
@@ -16,6 +20,14 @@ const usePresentGraphStore = defineStore('presentation-graph', () => {
   function clear() {
     nodes.value = [];
     edges.value = [];
+    selectedNode.value = 1;
+    disableSetSelectedNode.value = false;
+  }
+
+  function setSelectedNode(nodeId: number) {
+    if(!disableSetSelectedNode.value) {
+      selectedNode.value = nodeId;
+    }
   }
 
   function setHighLight(id: string, status: string) {
@@ -57,7 +69,10 @@ const usePresentGraphStore = defineStore('presentation-graph', () => {
     setup,
     clear,
     setHighLight,
-    removeHighLightAll
+    removeHighLightAll,
+    setSelectedNode,
+    selectedNode,
+    disableSetSelectedNode
   }
 });
 

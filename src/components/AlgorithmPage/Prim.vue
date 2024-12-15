@@ -66,21 +66,33 @@
       </button>
     </div>
   </div>
+  <div>Nút bắt đầu: {{ store.selectedNode }}</div>
   <p v-if="totalWeight > 0">Tổng trọng số: {{ totalWeight }}</p>
 </template>
 
 <script setup lang="ts">
 import useGraphModeStore, { GraphMode } from "@/stores/graphModeStore";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
 import usePrimAnimation from "@/composables/usePrimAnimation";
 import SpeedControl from "../SpeedControl.vue";
+import usePresentGraphStore from "@/stores/presentGraphStore";
 
 const graphModeStore = useGraphModeStore();
+const store = usePresentGraphStore();
+
 const { start, totalWeight, isRunning, pause, stop, setIntervalTime } = usePrimAnimation();
 
 const isStopEnable = computed(() => isRunning.value);
 const isPauseEnable = computed(() => isRunning.value);
 const isPlayEnable = computed(() => !isRunning.value);
+
+watch(isRunning, () => {
+  if(isRunning) {
+    store.disableSetSelectedNode = true;
+  } else {
+    store.disableSetSelectedNode = false;
+  }
+});
 
 onMounted(() => {
   graphModeStore.setMode(GraphMode.PresenMode);

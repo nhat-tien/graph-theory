@@ -154,7 +154,6 @@ td,
 th {
   padding: 0.5em 1em;
 }
-
 p {
   text-align: center;
   margin-top: 1em;

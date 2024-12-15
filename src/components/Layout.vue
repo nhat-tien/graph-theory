@@ -30,6 +30,7 @@ const store = useAbout();
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 .header {
   width: 100%;
@@ -49,6 +50,8 @@ const store = useAbout();
 }
 .main__center {
   flex: 1;
+  height: 100%;
+  overflow-y: auto;
 }
 .footer {
   width: 100%;
