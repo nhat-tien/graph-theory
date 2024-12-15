@@ -3,8 +3,8 @@
     <div class="info-container" id="modal">
       <button @click="$emit('close')">
         <svg
-          width="50px"
-          height="50px"
+          width="35px"
+          height="35px"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,10 @@
             />
         </svg>
       </button>
-      <p>App made by <a @click="openLinkGithub">@nhat-tien</a></p>
+      <h2>Graph Theory <small>v0.3.0</small></h2>
+      <div class="image-row"><img src="../assets/vue.svg"> + <img width="35px" src="../assets/typescript.svg" /> + <img width="38px" src="../assets/icon.png"> + <img width="38px" src="../assets/rust.svg" /> </div>
+      <div>Source code <a @click="openLinkRepo">Github</a></div>
+      <p>App made by <a @click="openLinkProfile">@nhat-tien</a></p>
     </div>
   </div>
 </template>
@@ -27,21 +30,12 @@
 <script setup lang="ts">
 import { open } from "@tauri-apps/api/shell";
 
-// onMounted(() => {
-//   handlerClick.value = (e: MouseEvent) => {
-//     if(!document.getElementById("modal")?.contains(e.target as Node)) {
-//       emit("close");
-//     }
-//   }
-//   document.addEventListener("click", handlerClick.value);
-// });
-//
-// onUnmounted(() => {
-//   document.removeEventListener("click", handlerClick.value)
-// });
-
-function openLinkGithub() {
+function openLinkProfile() {
   open("https://github.com/nhat-tien");
+}
+
+function openLinkRepo() {
+  open("https://github.com/nhat-tien/graph-theory");
 }
 </script>
 
@@ -63,8 +57,10 @@ function openLinkGithub() {
   background-color: $primary-color;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 a {
   cursor: pointer;
@@ -83,4 +79,12 @@ button {
 	cursor: pointer;
 	outline: inherit;
 } 
+.image-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+h2 {
+  margin-bottom: 1em;
+}
 </style>

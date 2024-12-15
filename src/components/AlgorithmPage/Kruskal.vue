@@ -1,5 +1,7 @@
 <template>
   <div class="controller-container">
+    <SpeedControl :on-change-speed="handleChangeSpeed" :disable-speed="isPauseEnable"/>
+    <div>
     <button :disabled="!isStopEnable" @click="stop">
       <svg
         fill="#000000"
@@ -63,6 +65,7 @@
       </svg>
     </button>
   </div>
+  </div>
   <div class="table-container">
     <table v-if="timeLine.length != 0">
       <tbody>
@@ -71,7 +74,7 @@
           <th>Trọng số</th>
         </tr>
         <tr v-for="edge in timeLine">
-          <td>{{ edge.edge.id }}</td>
+          <td>{{ changeEdgeIdDisplay(edge.edge.id) }}</td>
           <td>{{ edge.edge.weight }}</td>
         </tr>
       </tbody>
@@ -84,8 +87,9 @@
 import useKruskalAnimation from "@/composables/useKruskalAnimation";
 import useGraphModeStore, { GraphMode } from "@/stores/graphModeStore";
 import { computed, onMounted } from "vue";
+import SpeedControl from "../SpeedControl.vue";
 
-const { start, isRunning, pause, stop, timeLine, totalWeight } =
+const { start, isRunning, pause, stop, timeLine, totalWeight, setIntervalTime } =
   useKruskalAnimation();
 
 const graphModeStore = useGraphModeStore();
@@ -97,6 +101,20 @@ const isPlayEnable = computed(() => !isRunning.value);
 onMounted(() => {
   graphModeStore.setMode(GraphMode.PresenMode);
 });
+
+function changeEdgeIdDisplay(input: string): string {
+  const firstNumberRegex = /(?<=e)\d+/g;
+  const firstNumber = firstNumberRegex.exec(input);
+  const secondNumberRegex = /(?<=->)\d+/g;
+  const secondNumber = secondNumberRegex.exec(input);
+  
+  return `(${firstNumber}, ${secondNumber})`;
+}
+
+function handleChangeSpeed(speed: number) {
+  setIntervalTime(speed);
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -116,7 +134,7 @@ button:disabled {
 .controller-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .table-container {
@@ -139,5 +157,6 @@ th {
 
 p {
   text-align: center;
+  margin-top: 1em;
 }
 </style>

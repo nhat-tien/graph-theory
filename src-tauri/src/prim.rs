@@ -1,85 +1,91 @@
-use std::collections::{BinaryHeap, HashMap, HashSet};
+use crate::edge::{Edge, EdgeDataResponse, EdgeResponse};
+use crate::graph::{
+    add_edge_graph, convert_graph_from_fe_to_list_of_edge, is_cycle, Graph, GraphEdge,
+};
+use std::collections::HashSet;
 
-use crate::edge::{Edge, EdgeData, EdgeDataResponse, EdgeResponse};
+fn get_edges_at_node(graph: &Graph<i32, GraphEdge>, node: i32) -> Option<Vec<(i32, GraphEdge)>> {
+    match graph.get(&node) {
+        Some(neighbor_node) => {
+            let mut edges: Vec<(i32, GraphEdge)> = vec![];
+            for (node, edge) in neighbor_node {
+                edges.push((*node, edge.clone()));
+            }
+            Some(edges)
+        }
+        None => None,
+    }
+}
 
-
-#[derive(Eq, PartialEq, Clone)]
-struct MatrixEdge {
-    id: String,
-    weight: i32
-} 
-
-impl MatrixEdge {
-    fn new_blank() -> MatrixEdge {
-        MatrixEdge {
-            id: String::from(""),
-            weight: 0
+fn get_min_weight_edge(list: &Vec<(i32, GraphEdge)>) -> &(i32, GraphEdge) {
+    let mut min: &(i32, GraphEdge) = &list[0];
+    for item in list.iter() {
+        if item.1 < min.1 {
+            min = item;
         }
     }
-
-    fn new(id: String, weight: i32) -> MatrixEdge {
-        MatrixEdge {
-            id,
-            weight
-        }
-    }
-}
-
-impl Ord for MatrixEdge {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.weight.cmp(&other.weight).reverse()
-    }
-}
-
-impl PartialOrd for MatrixEdge {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-type Graph<i32, MatrixEdge> = HashMap<i32, HashMap<i32, MatrixEdge>>;
-
-fn generate_blank_matrix(length: i32) -> Vec<Vec<MatrixEdge>> {
-    let mut matrix = vec![];
-    for _i in 0..length {
-        let mut row = vec![];
-        for _j in 0..length {
-            row.push(MatrixEdge::new_blank());
-        }
-        matrix.push(row);
-    }
-    matrix
-}
-
-fn convert_graph_to_matrix(graph: &Vec<Edge>) -> Vec<Vec<MatrixEdge>> {
-    let mut matrix: Vec<Vec<MatrixEdge>> = generate_blank_matrix(graph.len() as i32);
-    for item in graph.iter() {
-        let target = item.target.parse::<usize>().unwrap();
-        let source = item.source.parse::<usize>().unwrap();
-        let weight = item.data.text.parse::<i32>().unwrap();
-        matrix[target][source] = MatrixEdge::new(item.id.clone(), weight);
-        matrix[source][target] = MatrixEdge::new(item.id.clone(), weight);
-    }
-    matrix
+    min
 }
 
 #[tauri::command]
-pub fn prime(graph_from_fe: Vec<Edge>, start_point: i32) -> Vec<EdgeResponse> {
-    let mut matrix: Vec<Vec<MatrixEdge>>  = convert_graph_to_matrix(&graph_from_fe);
-    let mut graph_result = vec![];
-    let mut visited = HashSet::new();
-    let mut heap = BinaryHeap::new();
-    let mut current_node = start_point;
+pub fn prim(graph_from_fe: Vec<Edge>, start_point: i32) -> Result<Vec<Vec<EdgeResponse>>, String> {
+    let edges: Vec<GraphEdge> = convert_graph_from_fe_to_list_of_edge(&graph_from_fe)?;
+    let mut graph_initial: Graph<i32, GraphEdge> = Graph::new();
+    let mut graph_travel: Graph<i32, GraphEdge> = Graph::new();
+    let mut graph_result: Vec<Vec<EdgeResponse>> = vec![];
+    let mut visited_nodes: HashSet<i32> = HashSet::new();
 
-    for i in 0..graph_from_fe.len() {
-        if matrix[current_node as usize][i as usize].weight > 0 && matrix[current_node as usize][i as usize].weight < i32::MAX{
-            heap.push(&matrix[current_node as usize][i as usize]);
+    visited_nodes.insert(start_point);
+    for edge in edges.iter() {
+        add_edge_graph(&mut graph_initial, edge);
+    }
+
+    loop {
+        let mut edges_response: Vec<EdgeResponse> = vec![];
+        let mut neighbor_edges: Vec<(i32, GraphEdge)> = vec![];
+        for node in visited_nodes.iter() {
+            if let Some(list_of_edge) = get_edges_at_node(&graph_initial, *node) {
+                for (target_node, edge) in list_of_edge.iter() {
+                    if visited_nodes.contains(&target_node) {
+                        continue;
+                    };
+                    if is_cycle(graph_travel.clone(), edge, *target_node) {
+                        continue;
+                    }
+                    neighbor_edges.push((*target_node, edge.clone()));
+                }
+            }
         }
-    }
+        if neighbor_edges.len() == 0 {
+            break;
+        };
+        let (min_node, min_edge): &(i32, GraphEdge) = get_min_weight_edge(&neighbor_edges);
 
-    visited.insert(current_node);
-    for i in 0..graph_from_fe.len() {
-        matrix[i as usize][current_node as usize] = MatrixEdge::new("".into(), i32::MAX);
+        visited_nodes.insert(*min_node);
+        add_edge_graph(&mut graph_travel, &min_edge);
+
+        for (_node, edge) in neighbor_edges.iter() {
+            if min_edge == edge {
+                let result = EdgeResponse {
+                    include: true,
+                    edge: EdgeDataResponse {
+                        id: edge.id.clone(),
+                        weight: edge.weight,
+                    },
+                };
+                edges_response.push(result);
+            } else {
+                let result = EdgeResponse {
+                    include: false,
+                    edge: EdgeDataResponse {
+                        id: edge.id.clone(),
+                        weight: edge.weight,
+                    },
+                };
+                edges_response.push(result);
+            }
+        }
+        graph_result.push(edges_response);
     }
-    graph_result
+    Ok(graph_result)
 }

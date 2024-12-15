@@ -5,7 +5,8 @@
 pub mod file_command;
 pub mod kruskal;
 pub mod edge;
-// pub mod prim;
+pub mod graph;
+pub mod prim;
 
 
 #[tauri::command]
@@ -21,7 +22,8 @@ fn main() {
             file_command::get_location_to_save,
             file_command::read_file,
             file_command::write_file,
-            kruskal::kruskal
+            kruskal::kruskal,
+            prim::prim,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

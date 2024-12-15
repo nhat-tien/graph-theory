@@ -8,6 +8,7 @@
     <div class="divider"></div>
     <div class="algo-container">
       <Kruskal v-if="selectedItem === 'Kruskal'" />
+      <Prim v-if="selectedItem === 'Prime'"/>
     </div>
   </div>
 </template>
@@ -15,6 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Kruskal from '../AlgorithmPage/Kruskal.vue';
+import Prim from '../AlgorithmPage/Prim.vue';
 
 const listOfAlgo = ref([
   "Prime",

@@ -34,13 +34,30 @@ const usePresentGraphStore = defineStore('presentation-graph', () => {
     })
   }
 
+  function removeHighLightAll() {
+    edges.value = edges.value.map((edge: Edge) => {
+      if( edge.data.hightlight || edge.data.hightlight != "") {
+        return {
+          ...toRaw(edge),
+            data: {
+              ...toRaw(edge.data),
+              highlight: "" 
+            }
+          }
+        } else {
+        return toRaw(edge);
+      }
+    })
+  }
+
 
   return {
     nodes,
     edges,
     setup,
     clear,
-    setHighLight
+    setHighLight,
+    removeHighLightAll
   }
 });
 

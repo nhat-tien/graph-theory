@@ -1,15 +1,19 @@
 import { ref } from "vue";
 
-
 export default function useTimer() {
   const end = ref(0);
   const currentCount = ref(0);
   const intervalId = ref<any>(null);
   const isRunning = ref<boolean>(false);
+  const intervalTime = ref(2000);
   const isEnd = ref(false);
 
   function setTime(setEnd: number) {
     end.value = setEnd
+  }
+
+  function setIntervalTime(second: number) {
+    intervalTime.value = second*1000;
   }
 
   function startTimer() {
@@ -24,7 +28,7 @@ export default function useTimer() {
         } else {
           stopTimer();
         };
-      },2000)
+      },intervalTime.value)
     }
   }
 
@@ -51,6 +55,7 @@ export default function useTimer() {
     resetTimer,
     setTime,
     isRunning,
-    isEnd
+    isEnd,
+    setIntervalTime
   }
 }
