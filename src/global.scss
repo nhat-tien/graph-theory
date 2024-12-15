@@ -16,9 +16,9 @@
 } 
 
 
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
-@import "@vue-flow/core/dist/style.css";
-@import "@vue-flow/core/dist/theme-default.css";
+/* @import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css'; */
+/* @import "@vue-flow/core/dist/style.css"; */
+/* @import "@vue-flow/core/dist/theme-default.css"; */
 
 .main-container {
   width: 100%;
@@ -39,5 +39,17 @@
 
 .vue-flow__edge-path {
   stroke: #000;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter_24pt-Regular.ttf");
+  font-weight: 600;
+  font-display: swap;
+}
+
+
+body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 

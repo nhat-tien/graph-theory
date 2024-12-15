@@ -28,5 +28,8 @@ import SideMenu from './components/SideMenuPage/SideMenu.vue';
   </Layout>
 </template>
 <style lang="scss">
-@import "./global.scss"
+@import '@vue-flow/controls/dist/style.css';
+@import "@vue-flow/core/dist/style.css";
+@import "@vue-flow/core/dist/theme-default.css";
+@import "./global.scss";
 </style>
