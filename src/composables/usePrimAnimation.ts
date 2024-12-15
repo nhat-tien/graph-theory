@@ -25,7 +25,7 @@ export default function usePrimAnimation() {
 
   const isRunning = ref(false);
 
-  const { currentCount, startTimer, setTime, stopTimer } = useTimer();
+  const { currentCount, startTimer, setTime, stopTimer, setIntervalTime} = useTimer();
 
   const currentFrame = computed<TimeLineFrame | null>(() => {
     if(currentCount.value <= store.edges.length) {
@@ -44,9 +44,9 @@ export default function usePrimAnimation() {
       store.removeHighLightAll()
       await setup();
       isStarted.value = true;
-      isRunning.value = true;
     };
       startTimer();
+      isRunning.value = true;
     } catch(e) {
       toast.error(e, {
         autoClose: 1000,
@@ -77,6 +77,7 @@ export default function usePrimAnimation() {
 
   function pause() {
     stopTimer()
+    isRunning.value = false;
   }
   
   function reset() {
@@ -115,6 +116,7 @@ export default function usePrimAnimation() {
     pause,
     isRunning,
     timeLine,
-    totalWeight
+    totalWeight,
+    setIntervalTime
   }
 }
