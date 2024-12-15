@@ -60,9 +60,9 @@ function selectItem(algoName: string) {
   }
 }
 .algo-container {
-  padding: 5px 10px 5px 20px;
+  padding: 5px 20px 5px 10px;
   overflow-y: auto;
-  height: 550px;
+  height: calc(100vh - 155px);
 }
 .divider {
   height: 1px;
