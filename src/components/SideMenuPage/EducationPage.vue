@@ -44,7 +44,7 @@ function selectItem(algoName: string) {
 }
 .choose-algo {
   font-size: 1rem;
-  height: 20%;
+  height: 100px;
   overflow-y: auto;
   /* background-color: red; */
   padding: 0.3em 0.5em 0.3em 0.5em;
@@ -62,7 +62,7 @@ function selectItem(algoName: string) {
 .algo-container {
   padding: 5px 10px 5px 20px;
   overflow-y: auto;
-  height: 80%;
+  height: 550px;
 }
 .divider {
   height: 1px;
