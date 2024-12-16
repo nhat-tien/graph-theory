@@ -17,8 +17,8 @@ jobs:
             artifact_name: appimage/${{ github.event.repository.name }}_
             ext_name: '_amd64.AppImage' 
           - platform: 'windows-latest'
-            artifact_name: nsis/${{ github.event.repository.name }}_
-            ext_name: '_x64-setup.exe'
+            artifact_name: msi/${{ github.event.repository.name }}_
+            ext_name: '_x64_en-US.msi'
 
     runs-on: ${{ matrix.platform }}
     steps:
