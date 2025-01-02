@@ -6,5 +6,5 @@
 
 ## Screenshoot
 ![minhhoa1](./minhhoa1.png)
-![minhhoa2](./minhhoa.png)
+![minhhoa2](./minhhoa2.png)
 
